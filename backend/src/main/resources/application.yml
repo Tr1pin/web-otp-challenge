@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: otp-challenge
+
+  # Perfil activo por defecto (sobrescribe con SPRING_PROFILES_ACTIVE en prod)
+  profiles:
+    active: dev
+
+---
+# ============ PERFIL DEV (local con Docker) ============
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/otp_challenge
+    username: otp_user
+    password: otp_pass_dev
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update        # crea/actualiza tablas solas en dev
+    show-sql: true            # ver las queries en consola
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+
+---
+# ============ PERFIL PROD (Neon / Railway) ============
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: ${DATABASE_URL}          # variable de entorno en Railway/Neon
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate          # en prod NO tocar el esquema automáticamente
+    show-sql: false
+    open-in-view: false
+
+server:
+  port: ${PORT:8080}              # Railway inyecta el puerto

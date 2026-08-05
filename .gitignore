@@ -1,0 +1,37 @@
+# ---- env / etc
+.env
+.env.*
+!.env.example
+application-local.yml
+application-local.properties
+
+# ---- Java / Spring Boot
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+*.war
+*.log
+.gradle/
+build/
+
+# ---- Node / Astro / Angular
+node_modules/
+dist/
+.astro/
+.angular/
+npm-debug.log*
+yarn-error.log*
+*.tsbuildinfo
+
+# ---- IDE ----
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+.DS_Store
+Thumbs.db
