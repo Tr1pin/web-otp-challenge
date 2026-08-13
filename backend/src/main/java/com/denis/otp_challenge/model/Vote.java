@@ -28,6 +28,6 @@ public class Vote {
 
     // auto generar la hora/minuto del voto.
     @CreationTimestamp
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
 }

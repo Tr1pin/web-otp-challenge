@@ -15,7 +15,7 @@ public class Champion {
     private Long id;
 
     private String name;
-    private String champion_key;
+    private String championKey;
     private String photoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,8 +30,8 @@ public class Champion {
 
     private String notes;
 
-    private int order_index;
-    private int vote_count;
+    private int orderIndex;
+    private int voteCount;
 
     @Enumerated(EnumType.STRING)
     private ChampionStatus status;

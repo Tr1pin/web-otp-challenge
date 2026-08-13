@@ -18,9 +18,9 @@ public class User {
     @Email
     private String email;
 
-    private String password_hash;
+    private String passwordHash;
 
-    private String display_name;
+    private String displayName;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -28,6 +28,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
-    private String provider_id;
+    private String providerId;
 
 }
