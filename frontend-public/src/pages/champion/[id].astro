@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SocialLinks from '../../components/SocialLinks.astro';
+import VideoGrid from '../../components/VideoGrid.astro';
+import type { Champion, Collaborator, Video } from '../../types';
+
+export async function getStaticPaths() {
+  const res = await fetch('http://localhost:8080/api/champions');
+  const champions: Champion[] = await res.json();
+  return champions.map((champion) => ({
+    params: { id: String(champion.id) },
+    props: { champion },
+  }));
+}
+
+const { champion } = Astro.props;
+
+let collaborator: Collaborator | null = null;
+if (champion.collaborator?.id) {
+  const res = await fetch(`http://localhost:8080/api/collaborators/${champion.collaborator.id}`);
+  collaborator = await res.json();
+}
+
+const videosRes = await fetch(`http://localhost:8080/api/videos/champion/${champion.id}`);
+const videos: Video[] = await videosRes.json();
+
+const winRatio = Math.round((champion.winRatio ?? 0) * 100);
+const championSplash = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.championKey}_0.jpg`;
+const collaboratorName = collaborator?.name ?? 'Desconocido';
+---
+
+<Layout title={`${champion.name} × ${collaboratorName}`}>
+  <main class="max-w-6xl mx-auto px-4 py-10">
+
+    <h1 class="sr-only">{champion.name} × {collaboratorName}</h1>
+
+    <div class="flex flex-col md:flex-row items-stretch justify-center gap-6">
+
+      <section class="flex-1 p-6 flex flex-col items-center text-center" aria-labelledby="collab-label">
+        <p id="collab-label" class="text-2xl font-medium text-hextech mb-3">COLABORADOR</p>
+        <figure class="w-full aspect-square rounded-xl overflow-hidden border-2 border-hextech/50 bg-[#2a3140] flex items-center justify-center mb-4 m-0">
+          {collaborator?.photoUrl
+            ? <img src={collaborator.photoUrl} alt={`Foto de ${collaboratorName}`} class="w-full h-full object-cover" />
+            : <span class="text-slate-300 text-6xl font-medium">{collaboratorName.charAt(0).toUpperCase()}</span>
+          }
+        </figure>
+        <h2 class="text-2xl font-medium text-slate-100 mb-4">{collaboratorName}</h2>
+        {collaborator?.socials && <SocialLinks socials={collaborator.socials} />}
+      </section>
+
+      <div class="flex items-center justify-center" aria-hidden="true">
+        <span class="text-hextech text-5xl font-medium">×</span>
+      </div>
+
+      <section class="flex-1 p-6 flex flex-col items-center text-center" aria-labelledby="champ-label">
+        <p id="champ-label" class="text-2xl font-medium text-hextech mb-3">CAMPEÓN</p>
+        <figure class="w-full aspect-square rounded-xl overflow-hidden border-2 border-hextech/50 mb-4 m-0">
+          <img src={championSplash} alt={`Splash art de ${champion.name}`} class="w-full h-full object-cover object-top" />
+        </figure>
+        <h2 class="text-2xl font-medium text-slate-100 mb-4">{champion.name}</h2>
+        <dl class="flex gap-8 m-0">
+          <div>
+            <dd class="text-3xl font-medium text-hextech m-0">{winRatio}%</dd>
+            <dt class="text-slate-400 text-xs mt-1">win ratio</dt>
+          </div>
+          <div>
+            <dd class="text-3xl font-medium text-hextech m-0">{champion.voteCount ?? 0}</dd>
+            <dt class="text-slate-400 text-xs mt-1">votos</dt>
+          </div>
+        </dl>
+      </section>
+
+    </div>
+
+    <VideoGrid videos={videos} championName={champion.name} collaboratorName={collaboratorName} />
+
+  </main>
+</Layout>

@@ -1,0 +1,33 @@
+---
+import type { CollaboratorSocial } from '../types';
+
+interface Props {
+  socials: CollaboratorSocial[];
+}
+
+const { socials } = Astro.props;
+
+const styles: Record<string, { icon: string; hover: string }> = {
+  TWITCH:    { icon: 'ti-brand-twitch',    hover: 'hover:border-[#9146FF] hover:text-[#9146FF]' },
+  X:         { icon: 'ti-brand-x',         hover: 'hover:border-white hover:text-white' },
+  YOUTUBE:   { icon: 'ti-brand-youtube',   hover: 'hover:border-[#FF0000] hover:text-[#FF0000]' },
+  INSTAGRAM: { icon: 'ti-brand-instagram', hover: 'hover:border-[#c13584] hover:text-[#c13584]' },
+  TIKTOK:    { icon: 'ti-brand-tiktok',    hover: 'hover:border-[#25F4EE] hover:text-[#25F4EE]' },
+  KICK:      { icon: 'ti-brand-kick',      hover: 'hover:border-[#53FC18] hover:text-[#53FC18]' },
+};
+---
+
+{socials.length > 0 && (
+  <nav class="flex flex-wrap justify-center gap-2" aria-label="Redes sociales">
+    {socials.map((social) => {
+      const s = styles[social.platform] ?? { icon: 'ti-link', hover: 'hover:border-hextech hover:text-hextech' };
+      return (
+        <a href={social.url} target="_blank" rel="noopener noreferrer"
+           class={`inline-flex items-center gap-1.5 bg-page border-[0.5px] border-surface-border rounded-lg px-3 py-2 text-slate-300 text-sm transition-colors ${s.hover}`}>
+          <i class={`ti ${s.icon}`} aria-hidden="true"></i>
+          {social.platform}
+        </a>
+      );
+    })}
+  </nav>
+)}
