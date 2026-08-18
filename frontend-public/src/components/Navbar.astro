@@ -1,0 +1,88 @@
+---
+const links = [
+  { label: 'Galería', href: '/' },
+  { label: 'Ranking', href: '/ranking' },
+  { label: 'El Challenge', href: '/info' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-page/60 border-b border-surface-border/50">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+
+    <a href="/" class="flex items-center gap-2 text-hextech text-lg font-medium">
+      <i class="ti ti-sword" aria-hidden="true"></i>
+      OTP Challenge
+    </a>
+
+    <div class="hidden md:flex items-center gap-6">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class={`text-sm transition-colors ${
+            currentPath === link.href ? 'text-hextech' : 'text-slate-300 hover:text-hextech'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <a
+      href="/login"
+      class="hidden md:inline-flex items-center gap-2 bg-hextech/10 border border-hextech/50 text-hextech rounded-lg px-4 py-2 text-sm hover:bg-hextech/20 transition-colors"
+    >
+      <i class="ti ti-login-2" aria-hidden="true"></i>
+      Login
+    </a>
+
+    <button
+    id="menu-toggle"
+    class="md:hidden text-slate-200 text-2xl cursor-pointer hover:text-hextech transition-colors"
+    aria-label="Abrir menú"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+  >
+    <i class="ti ti-menu-2" aria-hidden="true"></i>
+  </button>
+
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-surface-border/50 bg-page/90 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-3">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          class={`text-sm py-2 transition-colors ${
+            currentPath === link.href ? 'text-hextech' : 'text-slate-300 hover:text-hextech'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a
+        href="/login"
+        class="inline-flex items-center justify-center gap-2 bg-hextech/10 border border-hextech/50 text-hextech rounded-lg px-4 py-2 text-sm hover:bg-hextech/20 transition-colors mt-1"
+      >
+        <i class="ti ti-login-2" aria-hidden="true"></i>
+        Login
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    
+    toggle.innerHTML = isOpen
+      ? '<i class="ti ti-menu-2" aria-hidden="true"></i>'
+      : '<i class="ti ti-x" aria-hidden="true"></i>';
+  });
+</script>
