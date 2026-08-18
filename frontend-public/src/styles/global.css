@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.0.0/index.min.css');
+
+@theme {
+  --color-hextech: #22d3ee;
+  --color-surface: #181a20;
+  --color-surface-border: #2a2d36;
+  --color-page: #0e0f13;
+  --font-sans: 'Cascadia Code', monospace;
+  --font-mono: 'Cascadia Code', monospace;
+}
+
+* {
+  font-family: 'Cascadia Code', monospace;
+}
+
+
