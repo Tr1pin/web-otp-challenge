@@ -6,6 +6,10 @@ spring:
   profiles:
     active: dev
 
+jwt:
+  secret: ${JWT_SECRET:dev-only-clave-de-desarrollo-no-usar-en-produccion-32chars}
+  expiration: 86400000
+
 ---
 # ============ PERFIL DEV (local con Docker) ============
 spring:
@@ -56,3 +60,4 @@ spring:
 
 server:
   port: ${PORT:8080}              # Railway inyecta el puerto
+

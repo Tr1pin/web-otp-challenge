@@ -1,0 +1,57 @@
+package com.denis.otp_challenge.service;
+
+import com.denis.otp_challenge.dto.*;
+import com.denis.otp_challenge.model.User;
+import com.denis.otp_challenge.model.enums.AuthProvider;
+import com.denis.otp_challenge.model.enums.Role;
+import com.denis.otp_challenge.repository.UserRepository;
+import com.denis.otp_challenge.security.JwtService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
+    public AuthService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+    }
+
+
+    public AuthResponse register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.email())) {
+            throw new RuntimeException("El email ya está registrado");
+        }
+
+        User user = new User();
+        user.setEmail(request.email());
+        user.setPasswordHash(passwordEncoder.encode(request.password()));
+        user.setDisplayName(request.displayName());
+        user.setRole(Role.USER);
+        user.setProvider(AuthProvider.LOCAL);
+
+        User saved = userRepository.save(user);
+        String token = jwtService.generateToken(saved.getEmail());
+        return new AuthResponse(token, UserDto.from(saved));
+    }
+
+
+    public AuthResponse login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
+
+        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+            throw new RuntimeException("Credenciales inválidas");
+        }
+
+        String token = jwtService.generateToken(user.getEmail());
+        return new AuthResponse(token, UserDto.from(user));
+    }
+}
