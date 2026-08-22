@@ -1,10 +1,18 @@
 spring:
   application:
     name: otp-challenge
-
-  # Perfil activo por defecto (sobrescribe con SPRING_PROFILES_ACTIVE en prod)
   profiles:
     active: dev
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
+            scope:
+              - email
+              - profile
 
 jwt:
   secret: ${JWT_SECRET:dev-only-clave-de-desarrollo-no-usar-en-produccion-32chars}

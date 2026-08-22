@@ -1,6 +1,8 @@
 package com.denis.otp_challenge.config;
 
+import com.denis.otp_challenge.security.CustomOAuth2UserService;
 import com.denis.otp_challenge.security.JwtAuthFilter;
+import com.denis.otp_challenge.security.OAuth2SuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,9 +18,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter,
+                          CustomOAuth2UserService oAuth2UserService,
+                          OAuth2SuccessHandler oAuth2SuccessHandler) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.oAuth2UserService = oAuth2UserService;
+        this.oAuth2SuccessHandler = oAuth2SuccessHandler;
     }
 
     @Bean
@@ -29,15 +37,14 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/champions/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/collaborators/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/socials/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/videos/**").permitAll()
 
-                        // POST, PUT, DELETE, etc... : SOLO ADMIN
                         .requestMatchers("/api/champions/**").hasRole("ADMIN")
                         .requestMatchers("/api/collaborators/**").hasRole("ADMIN")
                         .requestMatchers("/api/socials/**").hasRole("ADMIN")
@@ -48,6 +55,11 @@ public class SecurityConfig {
 
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
+                )
 
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
