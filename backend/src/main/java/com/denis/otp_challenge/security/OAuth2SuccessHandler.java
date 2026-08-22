@@ -1,6 +1,7 @@
 package com.denis.otp_challenge.security;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -29,10 +30,16 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getAttribute("email");
-
         String token = jwtService.generateToken(email);
 
-        String redirectUrl = FRONTEND_URL + "/oauth-callback?token=" + token;
-        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60);
+
+        response.addCookie(cookie);
+
+        getRedirectStrategy().sendRedirect(request, response, FRONTEND_URL);
     }
 }
