@@ -1,4 +1,6 @@
 ---
+import AuthStatus from "./islands/AuthStatus";
+
 const links = [
   { label: 'Galería', href: '/' },
   { label: 'Ranking', href: '/ranking' },
@@ -29,23 +31,19 @@ const currentPath = Astro.url.pathname;
       ))}
     </div>
 
-    <a
-      href="/login"
-      class="hidden md:inline-flex items-center gap-2 bg-hextech/10 border border-hextech/50 text-hextech rounded-lg px-4 py-2 text-sm hover:bg-hextech/20 transition-colors"
-    >
-      <i class="ti ti-login-2" aria-hidden="true"></i>
-      Login
-    </a>
+    <div class="hidden md:block">
+      <AuthStatus client:load />
+    </div>
 
     <button
-    id="menu-toggle"
-    class="md:hidden text-slate-200 text-2xl cursor-pointer hover:text-hextech transition-colors"
-    aria-label="Abrir menú"
-    aria-expanded="false"
-    aria-controls="mobile-menu"
-  >
-    <i class="ti ti-menu-2" aria-hidden="true"></i>
-  </button>
+      id="menu-toggle"
+      class="md:hidden text-slate-200 text-2xl cursor-pointer hover:text-hextech transition-colors"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <i class="ti ti-menu-2" aria-hidden="true"></i>
+    </button>
 
   </div>
 
@@ -61,15 +59,14 @@ const currentPath = Astro.url.pathname;
           {link.label}
         </a>
       ))}
-      <a
-        href="/login"
-        class="inline-flex items-center justify-center gap-2 bg-hextech/10 border border-hextech/50 text-hextech rounded-lg px-4 py-2 text-sm hover:bg-hextech/20 transition-colors mt-1"
-      >
-        <i class="ti ti-login-2" aria-hidden="true"></i>
-        Login
-      </a>
+
+      <div>
+        <AuthStatus client:load />
+      </div>
+      
     </div>
   </div>
+
 </nav>
 
 <script>
