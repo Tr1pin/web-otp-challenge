@@ -8,6 +8,8 @@ import com.denis.otp_challenge.repository.UserRepository;
 import com.denis.otp_challenge.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthService {
@@ -26,8 +28,9 @@ public class AuthService {
 
 
     public AuthResponse register(RegisterRequest request) {
+
         if (userRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("El email ya está registrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El email ya está registrado");
         }
 
         User user = new User();
@@ -44,16 +47,18 @@ public class AuthService {
 
 
     public AuthResponse login(LoginRequest request) {
+
         User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("Credenciales inválidas"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas"));
 
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-            throw new RuntimeException("Credenciales inválidas");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas");
         }
 
         String token = jwtService.generateToken(user.getEmail());
         return new AuthResponse(token, UserDto.from(user));
     }
+
 
     public UserDto getCurrentUser(String email) {
         User user = userRepository.findByEmail(email)
