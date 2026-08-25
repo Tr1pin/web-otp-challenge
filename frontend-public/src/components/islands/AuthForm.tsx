@@ -43,7 +43,7 @@ export default function AuthForm() {
       const res = await fetch(API_URL + endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // manda y recibe la cookie
+        credentials: 'include',
         body: JSON.stringify(body),
       });
 
@@ -55,7 +55,7 @@ export default function AuthForm() {
         return;
       }
 
-      // Éxito: la cookie ya está puesta por el backend. Vamos a la home.
+      
       window.location.href = '/';
     } catch (e) {
       setError('Error de conexión');
