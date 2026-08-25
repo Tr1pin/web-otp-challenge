@@ -8,9 +8,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-// impide votos duplicados a nivel DB.
 @Table(name = "votes", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "champion_id"})
+        @UniqueConstraint(columnNames = {"user_id"})
 })
 public class Vote {
 

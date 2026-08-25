@@ -1,10 +1,12 @@
 package com.denis.otp_challenge.controller;
 
+import com.denis.otp_challenge.dto.MyVoteDto;
 import com.denis.otp_challenge.dto.VoteDto;
-import com.denis.otp_challenge.model.Vote;
+import com.denis.otp_challenge.dto.VoteResultDto;
 import com.denis.otp_challenge.service.VoteService;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -17,6 +19,21 @@ public class VoteController {
         this.voteService = voteService;
     }
 
+
+    @PostMapping("/champion/{championId}")
+    public VoteResultDto vote(@PathVariable Long championId, Authentication authentication) {
+        String email = (String) authentication.getPrincipal();
+        return voteService.vote(email, championId);
+    }
+
+
+    @GetMapping("/me")
+    public MyVoteDto myVote(Authentication authentication) {
+        String email = (String) authentication.getPrincipal();
+        return voteService.myVote(email);
+    }
+
+
     @GetMapping
     public List<VoteDto> getAll() {
         return voteService.findAll();
@@ -27,9 +44,4 @@ public class VoteController {
         return voteService.countForChampion(championId);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        voteService.delete(id);
-    }
 }
