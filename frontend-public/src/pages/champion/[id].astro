@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import SocialLinks from '../../components/SocialLinks.astro';
 import VideoGrid from '../../components/VideoGrid.astro';
+import VoteButton from '../../components/islands/VoteButton.tsx';
 import type { Champion, Collaborator, Video } from '../../types';
 
 export async function getStaticPaths() {
@@ -57,17 +58,16 @@ const collaboratorName = collaborator?.name ?? 'Desconocido';
         <figure class="w-full aspect-square rounded-xl overflow-hidden border-2 border-hextech/50 mb-4 m-0">
           <img src={championSplash} alt={`Splash art de ${champion.name}`} class="w-full h-full object-cover object-top" />
         </figure>
+
         <h2 class="text-2xl font-medium text-slate-100 mb-4">{champion.name}</h2>
-        <dl class="flex gap-8 m-0">
-          <div>
-            <dd class="text-3xl font-medium text-hextech m-0">{winRatio}%</dd>
-            <dt class="text-slate-400 text-xs mt-1">win ratio</dt>
-          </div>
-          <div>
-            <dd class="text-3xl font-medium text-hextech m-0">{champion.voteCount ?? 0}</dd>
-            <dt class="text-slate-400 text-xs mt-1">votos</dt>
-          </div>
-        </dl>
+         <VoteButton
+          client:load
+          championId={champion.id}
+          championName={champion.name}
+          initialCount={champion.voteCount ?? 0}
+          winRatio={winRatio}
+        />
+
       </section>
 
     </div>
