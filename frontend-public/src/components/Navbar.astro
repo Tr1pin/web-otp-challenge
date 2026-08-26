@@ -23,7 +23,7 @@ const currentPath = Astro.url.pathname;
         <a
           href={link.href}
           class={`text-sm transition-colors ${
-            currentPath === link.href ? 'text-hextech' : 'text-slate-300 hover:text-hextech'
+            currentPath === link.href ? 'text-hextech underline underline-offset-4 decoration-hextech/30' : 'text-slate-300 hover:text-hextech'
           }`}
         >
           {link.label}
