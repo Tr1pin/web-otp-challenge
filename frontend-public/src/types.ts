@@ -45,3 +45,22 @@ export interface Video {
   thumbnailUrl: string | null;
   watchUrl: string | null;
 }
+
+export interface User {
+  id: number;
+  email: string;
+  displayName: string;
+  role: string;
+}
+
+export interface VoteButtonProps {
+  championId: number;
+  championName: string;
+  initialCount: number;
+  winRatio: number;
+}
+
+export interface MyVote {
+  championId: number | null;
+  championName: string | null;
+}

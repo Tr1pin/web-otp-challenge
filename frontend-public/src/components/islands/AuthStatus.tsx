@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
+import type { User } from '../../types';
 
 const API_URL = 'http://localhost:8080';
-
-interface User {
-  id: number;
-  email: string;
-  displayName: string;
-  role: string;
-}
 
 export default function AuthStatus() {
   const [user, setUser] = useState<User | null>(null);
