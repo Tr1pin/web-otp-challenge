@@ -18,7 +18,7 @@ const styles: Record<string, { icon: string; hover: string }> = {
 ---
 
 {socials.length > 0 && (
-  <nav class="flex flex-wrap justify-center gap-2" aria-label="Redes sociales">
+  <nav class="flex flex-wrap justify-center gap-2 w-65" aria-label="Redes sociales">
     {socials.map((social) => {
       const s = styles[social.platform] ?? { icon: 'ti-link', hover: 'hover:border-hextech hover:text-hextech' };
       return (
