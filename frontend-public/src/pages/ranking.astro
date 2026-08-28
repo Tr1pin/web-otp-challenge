@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import RankingTitle from '../components/RankingTitle.astro';
 import type { Champion } from '../types';
 
 let champions: Champion[] = [];
@@ -25,10 +26,7 @@ function rankColor(pos: number) {
 <Layout title="Ranking - OTP Challenge">
   <main class="max-w-xl mx-auto px-4 py-10">
 
-    <header class="text-center mb-10">
-      <h1 class="text-3xl font-medium text-hextech mb-1">Ranking de OTPs</h1>
-      <p class="text-slate-400 mb-8">Los 5 campeones más votados por la comunidad.</p>
-    </header>
+    <RankingTitle />
 
     {top.length === 0 ? (
       <div class="text-center py-20 text-slate-400">

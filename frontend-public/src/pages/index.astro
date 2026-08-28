@@ -1,7 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HomeTitle from '../components/HomeTitle.astro';
-import Gallery from '../components/Gallery.astro';
+import GalleryWithSort from '../components/islands/GalleryWithSort';
 import type { Champion } from '../types';
 
 let champions: Champion[] = [];
@@ -17,7 +16,6 @@ try {
 
 <Layout title="OTP - Challenge">
   <main class="max-w-6xl mx-auto px-4 py-10">
-    <HomeTitle />
-    <Gallery champions={champions} />
+    <GalleryWithSort client:load champions={champions} />
   </main>
 </Layout>
