@@ -13,10 +13,19 @@ spring:
             scope:
               - email
               - profile
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
 
 jwt:
   secret: ${JWT_SECRET:dev-only-clave-de-desarrollo-no-usar-en-produccion-32chars}
   expiration: 86400000
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:}
+  api-key: ${CLOUDINARY_API_KEY:}
+  api-secret: ${CLOUDINARY_API_SECRET:}
 
 ---
 # ============ PERFIL DEV (local con Docker) ============

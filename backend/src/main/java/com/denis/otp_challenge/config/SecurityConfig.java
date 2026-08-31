@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/collaborators/**").hasRole("ADMIN")
                         .requestMatchers("/api/socials/**").hasRole("ADMIN")
                         .requestMatchers("/api/videos/**").hasRole("ADMIN")
+                        .requestMatchers("/api/uploads/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
@@ -81,7 +82,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4321"));
+        config.setAllowedOrigins(List.of("http://localhost:4321","http://localhost:4200"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
