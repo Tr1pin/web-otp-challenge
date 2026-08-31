@@ -1,3 +1,63 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+@theme {
+  /* Superficies (grafito frío, no negro puro) */
+  --color-ink-950: #0c0e13;
+  --color-ink-900: #12151c;
+  --color-ink-800: #191d27;
+  --color-ink-700: #232936;
+  --color-ink-600: #323a4c;
+
+  /* Texto */
+  --color-mist-100: #e8ecf4;
+  --color-mist-300: #aab3c5;
+  --color-mist-500: #6b7688;
+
+  /* Acento: hextech gold */
+  --color-gold-400: #f0c96b;
+  --color-gold-500: #d9a838;
+  --color-gold-600: #b6851f;
+
+  /* Estados */
+  --color-ok: #4ea884;
+  --color-warn: #d9a838;
+  --color-idle: #6b7688;
+  --color-danger: #d16060;
+
+  --font-display: 'Oswald', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ink-950);
+    color: var(--color-mist-100);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-400);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
