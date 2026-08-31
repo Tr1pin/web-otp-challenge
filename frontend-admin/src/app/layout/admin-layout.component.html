@@ -1,0 +1,49 @@
+<div class="min-h-screen flex bg-ink-950">
+    <!-- Barra lateral -->
+    <aside
+        class="w-60 shrink-0 border-r border-ink-700 bg-ink-900 flex flex-col
+        fixed inset-y-0 left-0"
+    >
+        <div class="px-5 py-5 border-b border-ink-700">
+          <p class="font-mono text-[10px] tracking-[0.3em] text-gold-500 uppercase">
+            OTP Challenge
+          </p>
+          <p class="font-display text-lg font-semibold uppercase tracking-tight">
+            Admin
+          </p>
+        </div>
+
+        <nav class="flex-1 px-3 py-4 space-y-1">
+          @for (item of nav; track item.path) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="bg-ink-700 text-mist-100 border-gold-500"
+              [routerLinkActiveOptions]="{ exact: item.exact }"
+              class="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-mist-300
+                     border-l-2 border-transparent hover:bg-ink-800 hover:text-mist-100
+                     transition-colors"
+            >
+              <span class="font-mono text-xs text-mist-500 w-4">{{ item.tag }}</span>
+              {{ item.label }}
+            </a>
+          }
+        </nav>
+
+        <div class="px-3 py-4 border-t border-ink-700">
+          <p class="px-3 text-xs text-mist-100 truncate">{{ auth.user()?.displayName }}</p>
+          <p class="px-3 text-[11px] text-mist-500 truncate mb-2">{{ auth.user()?.email }}</p>
+          <button
+            (click)="logout()"
+            class="w-full text-left px-3 py-2 rounded-md text-sm text-mist-300
+                   hover:bg-ink-800 hover:text-danger transition-colors"
+          >
+            Cerrar sesión
+          </button>
+        </div>
+    </aside>
+
+    <!-- Contenido -->
+    <main class="flex-1 ml-60 min-w-0">
+        <router-outlet />
+    </main>
+</div>

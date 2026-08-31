@@ -1,0 +1,70 @@
+<main class="min-h-screen grid place-items-center px-6 bg-ink-950">
+    <div class="w-full max-w-sm">
+        <!-- Marca -->
+        <div class="mb-8">
+          <p class="font-mono text-xs tracking-[0.3em] text-gold-500 uppercase">
+            OTP Challenge
+          </p>
+          <h1 class="font-display text-4xl font-semibold uppercase tracking-tight mt-1">
+            Panel de control
+          </h1>
+          <p class="text-mist-500 text-sm mt-2">
+            Acceso restringido. Solo administradores.
+          </p>
+        </div>
+
+        <form (ngSubmit)="submit()" class="space-y-4">
+          <div>
+            <label for="email" class="block text-xs font-medium text-mist-300 mb-1.5">
+              Correo
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="username"
+              [(ngModel)]="email"
+              [disabled]="loading()"
+              required
+              class="w-full rounded-md bg-ink-800 border border-ink-600 px-3 py-2.5
+                     text-mist-100 placeholder:text-mist-500 text-sm
+                     focus:border-gold-500 focus:ring-0 outline-none transition-colors"
+              placeholder="tu@correo.com"
+            />
+          </div>
+
+          <div>
+            <label for="password" class="block text-xs font-medium text-mist-300 mb-1.5">
+              Contraseña
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              [(ngModel)]="password"
+              [disabled]="loading()"
+              required
+              class="w-full rounded-md bg-ink-800 border border-ink-600 px-3 py-2.5
+                     text-mist-100 placeholder:text-mist-500 text-sm
+                     focus:border-gold-500 focus:ring-0 outline-none transition-colors"
+              placeholder="••••••••"
+            />
+          </div>
+
+          @if (error()) {
+            <p class="text-sm text-danger" role="alert">{{ error() }}</p>
+          }
+
+          <button
+            type="submit"
+            [disabled]="loading() || !email() || !password()"
+            class="w-full rounded-md bg-gold-500 text-ink-950 font-semibold text-sm
+                   py-2.5 hover:bg-gold-400 disabled:opacity-40 disabled:cursor-not-allowed
+                   transition-colors"
+          >
+            {{ loading() ? 'Entrando…' : 'Entrar' }}
+          </button>
+        </form>
+    </div>
+</main>

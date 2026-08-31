@@ -1,0 +1,137 @@
+<div class="px-8 py-8 max-w-2xl">
+      <header class="mb-8">
+        <a routerLink="/champions" class="text-mist-500 text-sm hover:text-mist-300">
+          ← Volver a champions
+        </a>
+        <h1 class="font-display text-3xl font-semibold uppercase tracking-tight mt-2">
+          {{ isEdit() ? 'Editar champion' : 'Nuevo champion' }}
+        </h1>
+      </header>
+
+      @if (loading()) {
+        <p class="text-mist-500 text-sm">Cargando…</p>
+      } @else {
+        <form (ngSubmit)="save()" class="space-y-6">
+          <!-- Imagen -->
+          <div class="flex items-start gap-5">
+            <div class="w-24 h-24 rounded-lg bg-ink-800 border border-ink-600 overflow-hidden
+                        shrink-0 grid place-items-center">
+              @if (form.photoUrl) {
+                <img [src]="form.photoUrl" alt="" class="w-full h-full object-cover" />
+              } @else {
+                <span class="text-mist-500 text-xs font-mono">sin foto</span>
+              }
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs font-medium text-mist-300 mb-1.5">Imagen</label>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/avif"
+                (change)="onFile($event)"
+                [disabled]="uploading()"
+                class="block w-full text-sm text-mist-300 file:mr-3 file:py-2 file:px-3
+                       file:rounded-md file:border-0 file:bg-ink-700 file:text-mist-100
+                       file:text-sm hover:file:bg-ink-600 file:cursor-pointer"
+              />
+              @if (uploading()) {
+                <p class="text-xs text-gold-400 mt-1.5">Subiendo a Cloudinary…</p>
+              }
+              @if (uploadError()) {
+                <p class="text-xs text-danger mt-1.5">{{ uploadError() }}</p>
+              }
+              <p class="text-[11px] text-mist-500 mt-1.5">PNG, JPG, WEBP o AVIF · máx. 5 MB</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label for="name" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Nombre *
+              </label>
+              <input id="name" name="name" [(ngModel)]="form.name" required
+                     class="input" placeholder="Yasuo" />
+            </div>
+
+            <div>
+              <label for="key" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Champion key
+              </label>
+              <input id="key" name="key" [(ngModel)]="form.championKey"
+                     class="input font-mono" placeholder="Yasuo" />
+            </div>
+
+            <div>
+              <label for="order" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Orden
+              </label>
+              <input id="order" name="order" type="number" [(ngModel)]="form.orderIndex"
+                     class="input font-mono" />
+            </div>
+
+            <div>
+              <label for="wins" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Victorias
+              </label>
+              <input id="wins" name="wins" type="number" min="0" [(ngModel)]="form.wins"
+                     class="input font-mono" />
+            </div>
+
+            <div>
+              <label for="losses" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Derrotas
+              </label>
+              <input id="losses" name="losses" type="number" min="0" [(ngModel)]="form.losses"
+                     class="input font-mono" />
+            </div>
+
+            <div>
+              <label for="status" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Estado
+              </label>
+              <select id="status" name="status" [(ngModel)]="form.status" class="input">
+                <option value="PENDING">Pendiente</option>
+                <option value="IN_PROGRESS">En progreso</option>
+                <option value="COMPLETED">Completado</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="collab" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Colaborador
+              </label>
+              <select id="collab" name="collab" [(ngModel)]="collaboratorId" class="input">
+                <option [ngValue]="null">— Ninguno —</option>
+                @for (col of collaborators(); track col.id) {
+                  <option [ngValue]="col.id">{{ col.name }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="col-span-2">
+              <label for="notes" class="block text-xs font-medium text-mist-300 mb-1.5">
+                Notas
+              </label>
+              <textarea id="notes" name="notes" [(ngModel)]="form.notes" rows="3"
+                        class="input resize-y" placeholder="Contexto del OTP…"></textarea>
+            </div>
+          </div>
+
+          @if (saveError()) {
+            <p class="text-sm text-danger" role="alert">{{ saveError() }}</p>
+          }
+
+          <div class="flex items-center gap-3 pt-2">
+            <button type="submit" [disabled]="saving() || uploading() || !form.name"
+                    class="rounded-md bg-gold-500 text-ink-950 font-semibold text-sm px-5 py-2.5
+                           hover:bg-gold-400 disabled:opacity-40 disabled:cursor-not-allowed
+                           transition-colors">
+              {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear champion' }}
+            </button>
+            <a routerLink="/champions"
+               class="text-mist-300 text-sm px-3 py-2.5 hover:text-mist-100 transition-colors">
+              Cancelar
+            </a>
+          </div>
+        </form>
+      }
+    </div>

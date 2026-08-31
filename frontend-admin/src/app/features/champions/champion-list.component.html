@@ -1,0 +1,94 @@
+<div class="px-8 py-8 max-w-5xl">
+    <header class="flex items-end justify-between mb-8">
+        <div>
+          <p class="font-mono text-xs tracking-[0.25em] text-gold-500 uppercase">Champions</p>
+          <h1 class="font-display text-3xl font-semibold uppercase tracking-tight mt-1">
+            Todos los OTP
+          </h1>
+        </div>
+        
+        <a
+          routerLink="/champions/new"
+          class="rounded-md bg-gold-500 text-ink-950 font-semibold text-sm px-4 py-2
+                 hover:bg-gold-400 transition-colors"
+        >
+          + Nuevo champion
+        </a>
+    </header>
+
+    @if (loading()) {
+        <p class="text-mist-500 text-sm">Cargando…</p>
+    } @else if (error()) {
+        <p class="text-danger text-sm">{{ error() }}</p>
+    } @else if (champions().length === 0) {
+        <div class="rounded-lg border border-dashed border-ink-600 p-10 text-center">
+          <p class="text-mist-300 text-sm">Aún no hay champions.</p>
+          <a routerLink="/champions/new" class="text-gold-400 text-sm hover:underline mt-1 inline-block">
+            Crea el primero
+          </a>
+        </div>
+    } @else {
+        <div class="rounded-lg border border-ink-700 overflow-hidden">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-ink-900 text-mist-500 text-left text-xs uppercase tracking-wide">
+                <th class="font-mono font-normal px-4 py-3 w-12">#</th>
+                <th class="font-normal px-4 py-3">Champion</th>
+                <th class="font-normal px-4 py-3">Colaborador</th>
+                <th class="font-normal px-4 py-3">Estado</th>
+                <th class="font-normal px-4 py-3 text-right">Votos</th>
+                <th class="font-normal px-4 py-3 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (c of champions(); track c.id) {
+                <tr class="border-t border-ink-700 hover:bg-ink-900/50 transition-colors">
+                  <td class="px-4 py-3 font-mono text-mist-500">{{ c.orderIndex }}</td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      @if (c.photoUrl) {
+                        <img [src]="c.photoUrl" [alt]="c.name"
+                             class="w-8 h-8 rounded object-cover bg-ink-700" />
+                      } @else {
+                        <div class="w-8 h-8 rounded bg-ink-700 grid place-items-center
+                                    text-[10px] text-mist-500 font-mono">
+                          {{ c.name.slice(0, 2).toUpperCase() }}
+                        </div>
+                      }
+                      <span class="text-mist-100 font-medium">{{ c.name }}</span>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 text-mist-300">
+                    {{ c.collaborator?.name ?? '—' }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <span class="inline-flex items-center gap-1.5 text-xs">
+                      <span class="w-1.5 h-1.5 rounded-full" [class]="dotClass(c.status)"></span>
+                      {{ label(c.status) }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-right font-mono text-mist-300">{{ c.voteCount }}</td>
+                  <td class="px-4 py-3 text-right whitespace-nowrap">
+                    <a [routerLink]="['/champions', c.id]"
+                       class="text-gold-400 hover:underline mr-4">Editar</a>
+                    @if (confirmingId() === c.id) {
+                      <button (click)="remove(c)" [disabled]="deleting()"
+                              class="text-danger hover:underline disabled:opacity-50">
+                        {{ deleting() ? '…' : 'Confirmar' }}
+                      </button>
+                      <button (click)="confirmingId.set(null)"
+                              class="text-mist-500 hover:underline ml-2">Cancelar</button>
+                    } @else {
+                      <button (click)="confirmingId.set(c.id)"
+                              class="text-mist-500 hover:text-danger transition-colors">
+                        Eliminar
+                      </button>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+    }
+</div>
