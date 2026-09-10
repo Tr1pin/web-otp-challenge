@@ -34,6 +34,11 @@ export interface CollaboratorSocial {
   url: string;
 }
 
+export interface CollaboratorSocialPayload {
+  platform: SocialPlatform;
+  url: string;
+}
+
 export interface Collaborator {
   id: number;
   name: string;
@@ -41,6 +46,22 @@ export interface Collaborator {
   bio: string | null;
   socials: CollaboratorSocial[];
 }
+
+export interface CollaboratorPayload {
+  name: string;
+  photoUrl: string | null;
+  bio: string | null;
+  socials: CollaboratorSocialPayload[];
+}
+
+export const SOCIAL_PLATFORM_LABEL: Record<SocialPlatform, string> = {
+  TWITCH: 'Twitch',
+  X: 'X (Twitter)',
+  YOUTUBE: 'YouTube',
+  INSTAGRAM: 'Instagram',
+  TIKTOK: 'TikTok',
+  KICK: 'Kick',
+};
 
 export interface Champion {
   id: number;

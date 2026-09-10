@@ -42,6 +42,27 @@ export const routes: Routes = [
             (m) => m.ChampionFormComponent,
           ),
       },
+      {
+        path: 'collaborators',
+        loadComponent: () =>
+          import('../app/features/collaborators/collaborator-list.component').then(
+            (m) => m.CollaboratorListComponent,
+          ),
+      },
+      {
+        path: 'collaborators/new',
+        loadComponent: () =>
+          import('./features/collaborators/collaborator-form.component').then(
+            (m) => m.CollaboratorFormComponent,
+          ),
+      },
+      {
+        path: 'collaborators/:id',
+        loadComponent: () =>
+          import('./features/collaborators/collaborator-form.component').then(
+            (m) => m.CollaboratorFormComponent,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

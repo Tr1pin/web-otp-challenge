@@ -15,6 +15,7 @@ export class AdminLayoutComponent {
   readonly nav = [
     { path: '/dashboard', label: 'Resumen', tag: '01', exact: true },
     { path: '/champions', label: 'Champions', tag: '02', exact: false },
+    { path: '/collaborators', label: 'Colaboradores', tag: '03', exact: false },
   ];
 
   async logout(): Promise<void> {

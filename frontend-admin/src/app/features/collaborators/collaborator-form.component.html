@@ -1,0 +1,113 @@
+<div class="px-8 py-8 max-w-2xl">
+  <header class="mb-8">
+    <a routerLink="/collaborators" class="text-mist-500 text-sm hover:text-mist-300">
+      ← Volver a colaboradores
+    </a>
+    <h1 class="font-display text-3xl font-semibold uppercase tracking-tight mt-2">
+      {{ isEdit() ? 'Editar colaborador' : 'Nuevo colaborador' }}
+    </h1>
+  </header>
+
+  @if (loading()) {
+    <p class="text-mist-500 text-sm">Cargando…</p>
+  } @else {
+    <form (ngSubmit)="save()" class="space-y-6">
+      <!-- Imagen -->
+      <div class="flex items-start gap-5">
+        <div class="w-24 h-24 rounded-full bg-ink-800 border border-ink-600 overflow-hidden
+                    shrink-0 grid place-items-center">
+          @if (form.photoUrl) {
+            <img [src]="form.photoUrl" alt="" class="w-full h-full object-cover" />
+          } @else {
+            <span class="text-mist-500 text-xs font-mono">sin foto</span>
+          }
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs font-medium text-mist-300 mb-1.5">Foto</label>
+          <input
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/avif"
+            (change)="onFile($event)"
+            [disabled]="uploading()"
+            class="block w-full text-sm text-mist-300 file:mr-3 file:py-2 file:px-3
+                   file:rounded-md file:border-0 file:bg-ink-700 file:text-mist-100
+                   file:text-sm hover:file:bg-ink-600 file:cursor-pointer"
+          />
+          @if (uploading()) {
+            <p class="text-xs text-gold-400 mt-1.5">Subiendo a Cloudinary…</p>
+          }
+          @if (uploadError()) {
+            <p class="text-xs text-danger mt-1.5">{{ uploadError() }}</p>
+          }
+          <p class="text-[11px] text-mist-500 mt-1.5">PNG, JPG, WEBP o AVIF · máx. 5 MB</p>
+        </div>
+      </div>
+
+      <!-- Datos básicos -->
+      <div>
+        <label for="name" class="block text-xs font-medium text-mist-300 mb-1.5">Nombre *</label>
+        <input id="name" name="name" [(ngModel)]="form.name" required
+               class="input" placeholder="Knekro" />
+      </div>
+
+      <div>
+        <label for="bio" class="block text-xs font-medium text-mist-300 mb-1.5">Bio</label>
+        <textarea id="bio" name="bio" [(ngModel)]="form.bio" rows="3"
+                  class="input resize-y" placeholder="Descripción del colaborador…"></textarea>
+      </div>
+
+      <!-- Socials dinámicos -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label class="block text-xs font-medium text-mist-300">Redes sociales</label>
+          <button type="button" (click)="addSocial()"
+                  class="text-gold-400 text-sm hover:underline">
+            + Añadir red
+          </button>
+        </div>
+
+        @if (form.socials.length === 0) {
+          <p class="text-mist-500 text-xs">Sin redes. Pulsa "Añadir red" para agregar una.</p>
+        } @else {
+          <div class="space-y-2">
+            @for (social of form.socials; track $index) {
+              <div class="flex items-center gap-2">
+                <select [(ngModel)]="social.platform" [name]="'platform-' + $index"
+                        class="input" style="width: 10rem; flex: 0 0 10rem;">
+                    @for (p of platforms; track p[0]) {
+                    <option [value]="p[0]">{{ p[1] }}</option>
+                    }
+                </select>
+                <input [(ngModel)]="social.url" [name]="'url-' + $index"
+                        class="input" style="flex: 1 1 auto; min-width: 0;"
+                        placeholder="https://…" />
+                <button type="button" (click)="removeSocial($index)"
+                        class="text-mist-500 hover:text-danger transition-colors px-2 text-lg shrink-0"
+                        title="Quitar">
+                    ×
+                </button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      @if (saveError()) {
+        <p class="text-sm text-danger" role="alert">{{ saveError() }}</p>
+      }
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" [disabled]="saving() || uploading() || !form.name"
+                class="rounded-md bg-gold-500 text-ink-950 font-semibold text-sm px-5 py-2.5
+                       hover:bg-gold-400 disabled:opacity-40 disabled:cursor-not-allowed
+                       transition-colors">
+          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear colaborador' }}
+        </button>
+        <a routerLink="/collaborators"
+           class="text-mist-300 text-sm px-3 py-2.5 hover:text-mist-100 transition-colors">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  }
+</div>
