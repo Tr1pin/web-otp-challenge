@@ -63,6 +63,27 @@ export const routes: Routes = [
             (m) => m.CollaboratorFormComponent,
           ),
       },
+      {
+        path: 'videos',
+        loadComponent: () =>
+          import('../app/features/videos/video-list.component').then(
+            (m) => m.VideoListComponent,
+          ),
+      },
+      {
+        path: 'videos/new',
+        loadComponent: () =>
+          import('./features/videos/video-form.component').then(
+            (m) => m.VideoFormComponent,
+          ),
+      },
+      {
+        path: 'videos/:id',
+        loadComponent: () =>
+          import('./features/videos/video-form.component').then(
+            (m) => m.VideoFormComponent,
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

@@ -1,0 +1,85 @@
+<div class="px-8 py-8 max-w-5xl">
+  <header class="flex items-end justify-between mb-8">
+    <div>
+      <p class="font-mono text-xs tracking-[0.25em] text-gold-500 uppercase">Vídeos</p>
+      <h1 class="font-display text-3xl font-semibold uppercase tracking-tight mt-1">
+        Todos los vídeos
+      </h1>
+    </div>
+    <a
+      routerLink="/videos/new"
+      class="rounded-md bg-gold-500 text-ink-950 font-semibold text-sm px-4 py-2
+             hover:bg-gold-400 transition-colors"
+    >
+      + Nuevo vídeo
+    </a>
+  </header>
+
+  @if (loading()) {
+    <p class="text-mist-500 text-sm">Cargando…</p>
+  } @else if (error()) {
+    <p class="text-danger text-sm">{{ error() }}</p>
+  } @else if (videos().length === 0) {
+    <div class="rounded-lg border border-dashed border-ink-600 p-10 text-center">
+      <p class="text-mist-300 text-sm">Aún no hay vídeos.</p>
+      <a routerLink="/videos/new" class="text-gold-400 text-sm hover:underline mt-1 inline-block">
+        Añade el primero
+      </a>
+    </div>
+  } @else {
+    <div class="rounded-lg border border-ink-700 overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-ink-900 text-mist-500 text-left text-xs uppercase tracking-wide">
+            <th class="font-mono font-normal px-4 py-3 w-12">#</th>
+            <th class="font-normal px-4 py-3">Vídeo</th>
+            <th class="font-normal px-4 py-3">YouTube ID</th>
+            <th class="font-normal px-4 py-3 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (v of videos(); track v.id) {
+            <tr class="border-t border-ink-700 hover:bg-ink-900/50 transition-colors">
+              <td class="px-4 py-3 font-mono text-mist-500">{{ v.orderIndex }}</td>
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  @if (v.thumbnailUrl) {
+                    <img [src]="v.thumbnailUrl" [alt]="v.title"
+                         class="w-16 h-9 rounded object-cover bg-ink-700" />
+                  } @else {
+                    <div class="w-16 h-9 rounded bg-ink-700 grid place-items-center
+                                text-[10px] text-mist-500 font-mono">—</div>
+                  }
+                  <span class="text-mist-100 font-medium">{{ v.title }}</span>
+                </div>
+              </td>
+              <td class="px-4 py-3">
+                <a [href]="v.watchUrl" target="_blank" rel="noopener"
+                   class="font-mono text-xs text-gold-400 hover:underline">
+                  {{ v.youtubeId }}
+                </a>
+              </td>
+              <td class="px-4 py-3 text-right whitespace-nowrap">
+                <a [routerLink]="['/videos', v.id]"
+                   class="text-gold-400 hover:underline mr-4">Editar</a>
+                @if (confirmingId() === v.id) {
+                  <button (click)="remove(v)" [disabled]="deleting()"
+                          class="text-danger hover:underline disabled:opacity-50">
+                    {{ deleting() ? '…' : 'Confirmar' }}
+                  </button>
+                  <button (click)="confirmingId.set(null)"
+                          class="text-mist-500 hover:underline ml-2">Cancelar</button>
+                } @else {
+                  <button (click)="confirmingId.set(v.id)"
+                          class="text-mist-500 hover:text-danger transition-colors">
+                    Eliminar
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

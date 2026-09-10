@@ -22,6 +22,22 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface Video {
+  id: number;
+  youtubeId: string;
+  title: string;
+  orderIndex: number;
+  thumbnailUrl: string | null;
+  watchUrl: string | null;
+}
+
+export interface VideoPayload {
+  youtubeId: string;
+  title: string;
+  orderIndex: number;
+  champion: { id: number } | null;
+}
+
 export interface CollaboratorSummary {
   id: number;
   name: string;

@@ -1,0 +1,84 @@
+<div class="px-8 py-8 max-w-2xl">
+  <header class="mb-8">
+    <a routerLink="/videos" class="text-mist-500 text-sm hover:text-mist-300">
+      ← Volver a vídeos
+    </a>
+    <h1 class="font-display text-3xl font-semibold uppercase tracking-tight mt-2">
+      {{ isEdit() ? 'Editar vídeo' : 'Nuevo vídeo' }}
+    </h1>
+  </header>
+
+  @if (loading()) {
+    <p class="text-mist-500 text-sm">Cargando…</p>
+  } @else {
+    <form (ngSubmit)="save()" class="space-y-6">
+      <div>
+        <label for="title" class="block text-xs font-medium text-mist-300 mb-1.5">
+          Título *
+        </label>
+        <input id="title" name="title" [(ngModel)]="form.title" required
+               class="input" placeholder="Ep. 1 — El comienzo del reto" />
+      </div>
+
+      <div>
+        <label for="youtubeId" class="block text-xs font-medium text-mist-300 mb-1.5">
+          YouTube ID *
+        </label>
+        <input id="youtubeId" name="youtubeId" [(ngModel)]="form.youtubeId" required
+               class="input font-mono" placeholder="dQw4w9WgXcQ" />
+        <p class="text-[11px] text-mist-500 mt-1.5">
+          Los 11 caracteres del final de la URL del vídeo (watch?v=<b>dQw4w9WgXcQ</b>).
+        </p>
+      </div>
+
+      <!-- Previsualización de la miniatura, en vivo -->
+      @if (form.youtubeId.length === 11) {
+        <div>
+          <p class="text-xs font-medium text-mist-300 mb-1.5">Miniatura</p>
+          <img [src]="'https://img.youtube.com/vi/' + form.youtubeId + '/hqdefault.jpg'"
+               alt="Miniatura del vídeo"
+               class="w-48 rounded-lg border border-ink-600" />
+        </div>
+      }
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="order" class="block text-xs font-medium text-mist-300 mb-1.5">
+            Orden
+          </label>
+          <input id="order" name="order" type="number" [(ngModel)]="form.orderIndex"
+                 class="input font-mono" />
+        </div>
+
+        <div>
+          <label for="champion" class="block text-xs font-medium text-mist-300 mb-1.5">
+            Champion *
+          </label>
+          <select id="champion" name="champion" [(ngModel)]="championId" class="input">
+            <option [ngValue]="null" disabled>— Elige un champion —</option>
+            @for (c of champions(); track c.id) {
+              <option [ngValue]="c.id">{{ c.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      @if (saveError()) {
+        <p class="text-sm text-danger" role="alert">{{ saveError() }}</p>
+      }
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" [disabled]="saving() || !form.title || !form.youtubeId || !championId"
+                class="rounded-md bg-gold-500 text-ink-950 font-semibold text-sm px-5 py-2.5
+                       hover:bg-gold-400 disabled:opacity-40 disabled:cursor-not-allowed
+                       transition-colors">
+          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear vídeo' }}
+        </button>
+        <a routerLink="/videos"
+           class="text-mist-300 text-sm px-3 py-2.5 hover:text-mist-100 transition-colors">
+          Cancelar
+        </a>
+      </div>
+    </form>
+  }
+</div>
