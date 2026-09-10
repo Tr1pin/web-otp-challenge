@@ -2,6 +2,7 @@ package com.denis.otp_challenge.service;
 
 import com.denis.otp_challenge.dto.CollaboratorDto;
 import com.denis.otp_challenge.model.Collaborator;
+import com.denis.otp_challenge.model.CollaboratorSocial;
 import com.denis.otp_challenge.repository.CollaboratorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,20 +32,39 @@ public class CollaboratorService {
         return CollaboratorDto.from(c);
     }
 
+    @Transactional
     public CollaboratorDto create(Collaborator collaborator) {
+        linkSocials(collaborator);
         Collaborator saved = collaboratorRepository.save(collaborator);
         return CollaboratorDto.from(saved);
     }
 
+    @Transactional
     public CollaboratorDto update(Long id, Collaborator data) {
         Collaborator existing = collaboratorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Collaborator not found: " + id));
+
         existing.setName(data.getName());
         existing.setPhotoUrl(data.getPhotoUrl());
         existing.setBio(data.getBio());
+
+        // Clean socials
+        existing.getSocials().clear();
+
+        if (data.getSocials() != null) {
+            for (CollaboratorSocial s : data.getSocials()) {
+                s.setId(null);
+                s.setCollaborator(existing);
+
+                // Add new socials
+                existing.getSocials().add(s);
+            }
+        }
+
         return CollaboratorDto.from(collaboratorRepository.save(existing));
     }
 
+    @Transactional
     public CollaboratorDto patch(Long id, Collaborator data) {
         Collaborator existing = collaboratorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Collaborator not found: " + id));
@@ -58,6 +78,14 @@ public class CollaboratorService {
         Collaborator existing = collaboratorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Collaborator not found: " + id));
         collaboratorRepository.delete(existing);
+    }
+
+    private void linkSocials(Collaborator collaborator) {
+        if (collaborator.getSocials() != null) {
+            for (CollaboratorSocial s : collaborator.getSocials()) {
+                s.setCollaborator(collaborator);
+            }
+        }
     }
 
 }
