@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function ChampionCard({ champion }: Props) {
-  const winRatio = Math.round((champion.winRatio ?? 0) * 100);
+  const winRatio = Math.round(champion.winRatio ?? 0);
   const collaboratorName = champion.collaborator?.name ?? 'Desconocido';
   const collaboratorPhoto = champion.collaborator?.photoUrl;
   const initial = collaboratorName.charAt(0).toUpperCase();

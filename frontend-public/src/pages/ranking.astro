@@ -37,7 +37,7 @@ function rankColor(pos: number) {
       <ol class="list-none p-0 m-0 flex flex-col gap-3 items-center">
         {top.map((champion, i) => {
           const pos = i + 1;
-          const winRatio = Math.round((champion.winRatio ?? 0) * 100);
+          const winRatio = Math.round(champion.winRatio ?? 0);
           const collaboratorName = champion.collaborator?.name ?? 'Desconocido';
           const collaboratorPhoto = champion.collaborator?.photoUrl;
           const initial = collaboratorName.charAt(0).toUpperCase();
