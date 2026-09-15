@@ -25,7 +25,7 @@ const collabCapitalized = collaboratorName.charAt(0).toUpperCase() + collaborato
           <a href={video.watchUrl ?? '#'} target="_blank" rel="noopener noreferrer" class="block w-full h-full">
             <img src={video.thumbnailUrl} alt={`Miniatura: ${video.title}`} class="absolute inset-0 w-full h-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/30 group-hover:from-black/70 transition-colors"></div>
-            <h3 class="absolute top-4 left-4 text-lg font-medium text-white drop-shadow-lg">{video.title}</h3>
+            <h3 class="absolute top-3 left-5 text-lg font-medium text-white drop-shadow-lg">{video.orderIndex}. {video.title}</h3>
           </a>
         </article>
       ))}
