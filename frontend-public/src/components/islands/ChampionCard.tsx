@@ -9,7 +9,9 @@ export default function ChampionCard({ champion }: Props) {
   const collaboratorName = champion.collaborator?.name ?? 'Desconocido';
   const collaboratorPhoto = champion.collaborator?.photoUrl;
   const initial = collaboratorName.charAt(0).toUpperCase();
-  const championImg = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.championKey}_0.jpg`;
+  const championImg = champion.photoUrl
+  ? champion.photoUrl
+  : `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.championKey}_0.jpg`;
 
   return (
     <article className="bg-surface border-[0.5px] border-surface-border rounded-2xl overflow-hidden transition-transform transition-colors duration-200 hover:scale-[1.04] hover:border-hextech">

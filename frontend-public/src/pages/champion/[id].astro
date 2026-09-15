@@ -26,7 +26,10 @@ const videosRes = await fetch(`http://localhost:8080/api/videos/champion/${champ
 const videos: Video[] = await videosRes.json();
 
 const winRatio = Math.round(champion.winRatio ?? 0);
-const championSplash = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.championKey}_0.jpg`;
+const championSplash = champion.photoUrl
+  ? champion.photoUrl
+  : `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.championKey}_0.jpg`;
+
 const collaboratorName = collaborator?.name ?? 'Desconocido';
 ---
 
