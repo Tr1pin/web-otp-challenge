@@ -31,9 +31,9 @@ export default function GalleryWithSort({ champions }: Props) {
   return (
     <>
       {/* Cabecera: título + selector */}
-      <div className="flex items-end justify-between flex-wrap gap-4 mb-8">
+      <div className="flex items-end justify-between flex-wrap gap-4 mb-8 mt-12">
         <div>
-          <h1 className="text-3xl font-medium text-hextech mb-1">OTP Challenge</h1>
+          <h1 className="text-4xl font-medium text-hextech mb-1">OTP Challenge</h1>
           <p className="text-slate-400 ml-1 m-0">La serie de Werlyb, campeón a campeón.</p>
         </div>
 
@@ -69,5 +69,6 @@ export default function GalleryWithSort({ champions }: Props) {
         </article>
       )}
     </>
+
   );
 }
