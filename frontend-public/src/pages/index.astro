@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GalleryWithSort from '../components/islands/GalleryWithSort';
+import VideoSection from '../components/astro/VideoSection.astro';
 import type { Champion } from '../types';
 
 let champions: Champion[] = [];
@@ -15,7 +16,15 @@ try {
 ---
 
 <Layout title="OTP - Challenge">
-  <main class="max-w-6xl mx-auto px-4 py-10">
+  <main class="max-w-6xl mx-auto px-6 py-4.5">
+    <VideoSection>
+      <span slot="title" class="block leading-tight">
+        <span class="block text-white text-2xl md:text-3xl lg:text-4xl tracking-[0.3em] my-3">siendo</span>
+        <span class="block text-hextech text-5xl md:text-7xl lg:text-8xl font-bold tracking-[0.15em] my-3">OTP</span>
+        <span class="block text-white text-2xl md:text-3xl lg:text-4xl tracking-[0.3em] my-3">por un día</span>
+      </span>
+    </VideoSection>
+    <hr class="my-20 bg-page/30 border-b border-gray-100/10" />
     <GalleryWithSort client:load champions={champions} />
   </main>
 </Layout>
