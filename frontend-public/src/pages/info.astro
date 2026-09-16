@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+import VideoSection from '../components/astro/VideoSection.astro';
+---     
+
+<Layout title="El Challenge · OTP Challenge">
+  <main class="max-w-3xl mx-auto px-6 py-20">
+    
+    <VideoSection>
+      <span slot="title">
+        <span class="text-hextech">¿Qué es el OTP Challenge?</span>
+      </span>
+    </VideoSection>
+
+    <!-- Frases del video de presentación -->
+    <section class="space-y-10 text-slate-300 text-lg [word-spacing:0.2em]">
+       <p>
+        Los <span class="text-hextech">one-trick ponies</span> tienen una
+        <span class="text-hextech"> ventaja abismal</span>: juegan siempre lo mismo, todos los días, todas las
+        partidas. Da igual el matchup <span class="text-hextech">se lo conocen a la perfección</span>. En este
+        reto me toca <span class="text-hextech">ser uno de ellos</span>.
+      </p>
+      <p>
+        La mecánica es simple: por cada OTP, <span class="text-hextech">aprender lo más rápido posible</span>
+        todo sobre un campeón y jugarlo durante <span class="text-hextech">diez partidas seguidas</span>.
+        <span class="text-hextech">Builds, runas, fase de líneas, teamfights</span>. Estudiando y copiando a los mejores
+        one trick ponies y profesionales que lo dominan, y en algunos casos con
+        la ayuda de un <span class="text-hextech">OTP</span> que enseñe hasta el último detalle.
+      </p>
+      <p>
+        El objetivo: <span class="text-hextech">aprender campeones nuevos</span>, traer contenido fresco y
+        descubrir con cuál consigo <span class="text-hextech">mejor winrate</span>.
+        No se trata de acabar (0-10) así que NO todos los campeones están sobre la mesa.
+      </p>
+      <p>
+        Y lo mejor: <span class="text-hextech">cada OTP lo elegís vosotros</span>.
+        Cuando se alcanza el objetivo de suscriptores, se desbloquea el
+        siguiente, y sale de vuestros comentarios más votados.
+      </p>
+    </section>
+
+    <div class="text-center pt-12">
+      <a
+        href="/"
+        class="inline-block bg-hextech/10 border-[0.5px] border-hextech text-hextech
+               font-medium px-6 py-3 rounded-lg hover:bg-hextech/20 transition-colors no-underline"
+      >
+        Ver todos los OTP
+      </a>
+    </div>
+
+  </main>
+</Layout>
