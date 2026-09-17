@@ -14,13 +14,13 @@ const {
 } = Astro.props;
 ---
 
-<header class="mb-10 text-center">
+<!-- Vídeo de presentación -->
+<div class="mb-8">
+  <VideoEmbed youtubeId={youtubeId} title={videoTitle} />
+</div>
+
+<header class="mb-5 text-center">
   <h1 class="text-4xl font-medium mb-1">
     <slot name="title">{title}</slot>
   </h1>
 </header>
-
-<!-- Vídeo de presentación -->
-<div class="mb-12">
-  <VideoEmbed youtubeId={youtubeId} title={videoTitle} />
-</div>
