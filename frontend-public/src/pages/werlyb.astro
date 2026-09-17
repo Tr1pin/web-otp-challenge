@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SocialLinks from '../components/astro/SocialLinks.astro';
+import type { CollaboratorSocial } from '../types';
+
+const socials: CollaboratorSocial[] = [
+  { id: 1, platform: 'TWITCH',  url: 'https://www.twitch.tv/werlyb' },
+  { id: 2, platform: 'YOUTUBE', url: 'https://youtube.com/@werlyb' },
+  { id: 3, platform: 'X',       url: 'https://x.com/werlyb' },
+  { id: 4, platform: 'INSTAGRAM', url: 'https://www.instagram.com/werlyb' },
+  { id: 5, platform: 'TIKTOK',   url: 'https://www.tiktok.com/@werlyb' },
+  { id: 6, platform: 'KICK',     url: 'https://kick.com/werlyb' },
+];
+---
+
+<Layout title="Sobre Werlyb · OTP Challenge">
+  <main class="max-w-2xl mx-auto px-6 py-14 text-center">
+
+    <div class="mb-8">
+      <img
+        src="/werlyb.webp"
+        alt="Werlyb"
+        class="w-64 h-64 rounded-full object-cover mx-auto border-[0.5px] border-surface-border"
+        />
+    </div>
+
+     <h1 class="text-4xl font-medium text-slate-100 mb-5">
+      Werlyb
+    </h1>
+
+    <p class="font-mono text-xs tracking-[0.3em] text-hextech underline underline-offset-4 uppercase mb-8">
+      Creador del OTP Challenge
+    </p>
+
+    <p class="text-slate-300 text-base leading-loose mb-5">
+        <span class="text-hextech">Jorge "Werlyb" Casanovas</span> es una de las figuras más
+        consolidadas y queridas del universo hispanohablante de
+        League of Legends. Tras marcar una época como
+        <span class="text-hextech"> jugador profesional</span> en la escena
+        competitiva de primer nivel, ha consolidado una trayectoria impecable en su transición
+        hacia la <span class="text-hextech">creación de contenido</span>. Con su carisma y un
+        profundo conocimiento estratégico del juego, conecta
+        diariamente con miles de seguidores a través de sus
+        directos, siendo <span class="text-hextech">creador de proyectos comunitarios </span>
+         de gran impacto como el popular <span class="text-hextech">OTP Challenge</span>.
+    </p>
+    <p class="text-slate-300 text-base leading-loose mb-3">
+
+    </p>
+
+    <!-- Redes -->
+    <div class="flex justify-center">
+      <SocialLinks socials={socials} />
+    </div>
+
+  </main>
+</Layout>

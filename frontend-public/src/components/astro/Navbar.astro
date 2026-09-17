@@ -2,9 +2,10 @@
 import AuthStatus from "../islands/AuthStatus";
 
 const links = [
+  { label: 'El Challenge', href: '/info' },
   { label: 'Galería', href: '/' },
   { label: 'Ranking', href: '/ranking' },
-  { label: 'El Challenge', href: '/info' },
+  { label: 'Werlyb', href: '/werlyb' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -13,9 +14,8 @@ const currentPath = Astro.url.pathname;
 <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-page/60 border-b border-surface-border/50">
   <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
 
-    <a href="/" class="flex items-center gap-2 text-hextech text-lg font-medium">
-      <i class="ti ti-sword" aria-hidden="true"></i>
-      OTP Challenge
+    <a href="/" class="flex items-center gap-2 group">
+      <span class="otp-logo text-xl font-extrabold tracking-tight">OTP Challenge</span>
     </a>
 
     <div class="hidden md:flex items-center gap-6">
@@ -83,3 +83,14 @@ const currentPath = Astro.url.pathname;
       : '<i class="ti ti-x" aria-hidden="true"></i>';
   });
 </script>
+
+
+<style>
+  .otp-logo {
+    color: #22d3ee;
+    text-shadow:
+      0 0 8px rgba(34, 211, 238, 0.7),
+      0 0 20px rgba(34, 211, 238, 0.5),
+      0 0 2px rgba(255, 255, 255, 0.8);
+  }
+</style>
