@@ -57,14 +57,14 @@ logging:
     org.hibernate.SQL: DEBUG
 
 ---
-# ============ PERFIL PROD (Neon / Railway) ============
+# ============ PERFIL PROD (Railway) ============
 spring:
   config:
     activate:
       on-profile: prod
 
   datasource:
-    url: ${DATABASE_URL}          # variable de entorno en Railway/Neon
+    url: ${DATABASE_URL}          # variable de entorno Railway
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -77,4 +77,5 @@ spring:
 
 server:
   port: ${PORT:8080}              # Railway inyecta el puerto
+  forward-headers-strategy: framework
 
