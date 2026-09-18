@@ -5,8 +5,10 @@ import VideoGrid from '../../components/astro/VideoGrid.astro';
 import VoteButton from '../../components/islands/VoteButton.tsx';
 import type { Champion, Collaborator, Video } from '../../types';
 
+const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
+
 export async function getStaticPaths() {
-  const res = await fetch('http://localhost:8080/api/champions');
+  const res = await fetch(`${API_URL}/api/champions`);
   const champions: Champion[] = await res.json();
   return champions.map((champion) => ({
     params: { id: String(champion.id) },
@@ -18,11 +20,11 @@ const { champion } = Astro.props;
 
 let collaborator: Collaborator | null = null;
 if (champion.collaborator?.id) {
-  const res = await fetch(`http://localhost:8080/api/collaborators/${champion.collaborator.id}`);
+  const res = await fetch(`${API_URL}/api/collaborators/${champion.collaborator.id}`);
   collaborator = await res.json();
 }
 
-const videosRes = await fetch(`http://localhost:8080/api/videos/champion/${champion.id}`);
+const videosRes = await fetch(`${API_URL}/api/videos/champion/${champion.id}`);
 const videos: Video[] = await videosRes.json();
 
 const winRatio = Math.round(champion.winRatio ?? 0);

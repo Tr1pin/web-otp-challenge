@@ -6,7 +6,9 @@ import type { Champion } from '../types';
 let champions: Champion[] = [];
 
 try {
-  const res = await fetch('http://localhost:8080/api/champions?sort=votes');
+  const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
+  const res = await fetch(`${API_URL}/api/champions?sort=votes`);
+  
   if (!res.ok) throw new Error('API respondió con error');
   champions = await res.json();
 } catch (e) {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
 
 export default function AuthForm() {
   const [mode, setMode] = useState<'login' | 'register'>('login');

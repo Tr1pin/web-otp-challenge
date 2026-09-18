@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { User } from '../../types';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
 
 export default function AuthStatus() {
   const [user, setUser] = useState<User | null>(null);
