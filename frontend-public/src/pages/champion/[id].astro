@@ -8,6 +8,7 @@ import type { Champion, Collaborator, Video } from '../../types';
 const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
 
 export async function getStaticPaths() {
+  const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
   const res = await fetch(`${API_URL}/api/champions`);
   const champions: Champion[] = await res.json();
   return champions.map((champion) => ({
