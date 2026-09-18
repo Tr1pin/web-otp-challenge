@@ -34,7 +34,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getAttribute("email");
         String token = jwtService.generateToken(email);
-        
+
         ResponseCookie cookie = ResponseCookie.from("token", token)
                 .httpOnly(true)
                 .secure(true)
