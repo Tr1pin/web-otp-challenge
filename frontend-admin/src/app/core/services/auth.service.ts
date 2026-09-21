@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { API_URL } from '../../app.config';
+import { environment } from '../../../environments/environment';
 import { AuthResponse, User } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
@@ -25,7 +25,7 @@ export class AuthService {
   async login(email: string, password: string): Promise<void> {
     const res = await firstValueFrom(
       this.http.post<AuthResponse>(
-        `${API_URL}/api/auth/login`,
+        `${environment.apiUrl}/api/auth/login`,
         { email, password },
         { withCredentials: true },
       ),
@@ -37,7 +37,7 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       await firstValueFrom(
-        this.http.post(`${API_URL}/api/auth/logout`, {}, { withCredentials: true }),
+        this.http.post(`${environment.apiUrl}/api/auth/logout`, {}, { withCredentials: true }),
       );
     } finally {
       this._token.set(null);
@@ -48,7 +48,7 @@ export class AuthService {
   async restore(): Promise<void> {
     try {
       const user = await firstValueFrom(
-        this.http.get<User>(`${API_URL}/api/auth/me`, { withCredentials: true }),
+        this.http.get<User>(`${environment.apiUrl}/api/auth/me`, { withCredentials: true }),
       );
       this._user.set(user);
     } catch {

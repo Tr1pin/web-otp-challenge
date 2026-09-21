@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { API_URL } from '../../app.config';
+import { environment } from '../../../environments/environment';
 import { Champion, ChampionPayload } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class ChampionService {
   private http = inject(HttpClient);
-  private readonly base = `${API_URL}/api/champions`;
+  private readonly base = `${environment.apiUrl}/api/champions`;
 
   list(sort?: 'votes' | 'winratio' | 'order'): Observable<Champion[]> {
     const url = sort ? `${this.base}?sort=${sort}` : this.base;

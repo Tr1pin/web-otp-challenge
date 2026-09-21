@@ -19,5 +19,3 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => inject(AuthService).restore()),
   ],
 };
-
-export const API_URL = 'http://localhost:8080';

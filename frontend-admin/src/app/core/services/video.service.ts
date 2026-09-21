@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { API_URL } from '../../app.config';
+import { environment } from '../../../environments/environment';
 import { Video, VideoPayload } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class VideoService {
   private http = inject(HttpClient);
-  private readonly base = `${API_URL}/api/videos`;
+  private readonly base = `${environment.apiUrl}/api/videos`;
 
   list(): Observable<Video[]> {
     return this.http.get<Video[]>(this.base);
