@@ -26,38 +26,38 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-
-    public AuthResponse register(RegisterRequest request) {
-
-        if (userRepository.existsByEmail(request.email())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El email ya está registrado");
-        }
-
-        User user = new User();
-        user.setEmail(request.email());
-        user.setPasswordHash(passwordEncoder.encode(request.password()));
-        user.setDisplayName(request.displayName());
-        user.setRole(Role.USER);
-        user.setProvider(AuthProvider.LOCAL);
-
-        User saved = userRepository.save(user);
-        String token = jwtService.generateToken(saved.getEmail());
-        return new AuthResponse(token, UserDto.from(saved));
-    }
-
-
-    public AuthResponse login(LoginRequest request) {
-
-        User user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas"));
-
-        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas");
-        }
-
-        String token = jwtService.generateToken(user.getEmail());
-        return new AuthResponse(token, UserDto.from(user));
-    }
+// Login local desactivado por seguridad — solo Google.
+//    public AuthResponse register(RegisterRequest request) {
+//
+//        if (userRepository.existsByEmail(request.email())) {
+//            throw new ResponseStatusException(HttpStatus.CONFLICT, "El email ya está registrado");
+//        }
+//
+//        User user = new User();
+//        user.setEmail(request.email());
+//        user.setPasswordHash(passwordEncoder.encode(request.password()));
+//        user.setDisplayName(request.displayName());
+//        user.setRole(Role.USER);
+//        user.setProvider(AuthProvider.LOCAL);
+//
+//        User saved = userRepository.save(user);
+//        String token = jwtService.generateToken(saved.getEmail());
+//        return new AuthResponse(token, UserDto.from(saved));
+//    }
+//
+//
+//    public AuthResponse login(LoginRequest request) {
+//
+//        User user = userRepository.findByEmail(request.email())
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas"));
+//
+//        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas");
+//        }
+//
+//        String token = jwtService.generateToken(user.getEmail());
+//        return new AuthResponse(token, UserDto.from(user));
+//    }
 
 
     public UserDto getCurrentUser(String email) {

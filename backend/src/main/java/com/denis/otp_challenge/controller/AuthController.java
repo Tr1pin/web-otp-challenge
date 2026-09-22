@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.HttpHeaders;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -20,21 +22,22 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register")
-    public AuthResponse register(@RequestBody RegisterRequest request,
-                                 HttpServletResponse response) {
-        AuthResponse auth = authService.register(request);
-        addTokenCookie(response, auth.token());
-        return auth;
-    }
-
-    @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequest request,
-                              HttpServletResponse response) {
-        AuthResponse auth = authService.login(request);
-        addTokenCookie(response, auth.token());
-        return auth;
-    }
+    // Login local desactivado por seguridad — solo Google.
+//    @PostMapping("/register")
+//    public AuthResponse register(@RequestBody RegisterRequest request,
+//                                 HttpServletResponse response) {
+//        AuthResponse auth = authService.register(request);
+//        addTokenCookie(response, auth.token());
+//        return auth;
+//    }
+//
+//    @PostMapping("/login")
+//    public AuthResponse login(@RequestBody LoginRequest request,
+//                              HttpServletResponse response) {
+//        AuthResponse auth = authService.login(request);
+//        addTokenCookie(response, auth.token());
+//        return auth;
+//    }
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> me(Authentication authentication) {
@@ -69,5 +72,14 @@ public class AuthController {
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    @GetMapping("/oauth-start")
+    public void oauthStart(@RequestParam(defaultValue = "public") String origin,
+                           HttpServletResponse response) throws IOException {
+        ResponseCookie cookie = ResponseCookie.from("oauth_origin", origin)
+                .httpOnly(true).secure(true).sameSite("None").path("/").maxAge(300).build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        response.sendRedirect("/oauth2/authorization/google");
     }
 }

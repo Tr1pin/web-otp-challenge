@@ -19,7 +19,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtService jwtService;
 
     @Value("${app.frontend-url:http://localhost:4321}")
-    private String frontendUrl;
+    private String publicUrl;
+
+    @Value("${app.admin-url:http://localhost:4200}")
+    private String adminUrl;
 
     public OAuth2SuccessHandler(JwtService jwtService) {
         this.jwtService = jwtService;
@@ -44,6 +47,22 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        getRedirectStrategy().sendRedirect(request, response, frontendUrl);
+
+        String target = publicUrl;
+        if (request.getCookies() != null) {
+            for (var c : request.getCookies()) {
+                if ("oauth_origin".equals(c.getName()) && "admin".equals(c.getValue())) {
+                    target = adminUrl;
+                    break;
+                }
+            }
+        }
+
+        // Limpiamos la cookie temporal de origen.
+        ResponseCookie clear = ResponseCookie.from("oauth_origin", "")
+                .path("/").maxAge(0).sameSite("None").secure(true).build();
+        response.addHeader(HttpHeaders.SET_COOKIE, clear.toString());
+
+        getRedirectStrategy().sendRedirect(request, response, target);
     }
 }
