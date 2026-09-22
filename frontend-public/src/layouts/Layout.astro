@@ -4,9 +4,17 @@ import Navbar from '../components/astro/Navbar.astro';
 
 interface Props {
   title?: string;
+  description?: string;
+  image?: string;
 }
 
-const { title = 'OTP Challenge' } = Astro.props;
+const {
+  title = 'OTP Challenge — La serie de Werlyb',
+  description = 'Sigue el OTP Challenge de Werlyb: un campeón, diez partidas, campeón a campeón. Vídeos, win ratios y vota por tu OTP favorito.',
+  image = '/og-image.jpg',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!DOCTYPE html>
@@ -14,15 +22,33 @@ const { title = 'OTP Challenge' } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css" />
+
+    <!-- SEO básico -->
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph (compartir en redes/WhatsApp) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site).href} />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter/X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site).href} />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css" />
   </head>
-  
+
   <body class="bg-[#0e0f13] text-slate-100 min-h-screen">
     <Navbar />
     <div class="pt-16">
       <slot />
     </div>
   </body>
-
 </html>
