@@ -12,8 +12,15 @@
             Acceso restringido. Solo administradores.
           </p>
         </div>
-
-        <form (ngSubmit)="submit()" class="space-y-4">
+        
+        <a  href="{{ googleLoginUrl }}"
+          class="w-full flex items-center justify-center gap-2 rounded-md bg-ink-800 border border-ink-600
+                text-mist-100 text-sm py-2.5 hover:border-gold-500 transition-colors no-underline mb-4"
+        >
+          Continuar con Google
+        </a>
+        
+        <!-- <form (ngSubmit)="submit()" class="space-y-4">
           <div>
             <label for="email" class="block text-xs font-medium text-mist-300 mb-1.5">
               Correo
@@ -65,6 +72,6 @@
           >
             {{ loading() ? 'Entrando…' : 'Entrar' }}
           </button>
-        </form>
+        </form> -->
     </div>
 </main>
