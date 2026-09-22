@@ -1,10 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Champion } from '../../types.ts';
 import ChampionCard from './ChampionCard.tsx';
 
-interface Props {
-  champions: Champion[];
-}
+const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
 
 type SortKey = 'default' | 'votes' | 'winratio';
 
@@ -13,8 +11,22 @@ const OPTIONS: { key: Exclude<SortKey, 'default'>; label: string }[] = [
   { key: 'winratio', label: 'Mejor WR' },
 ];
 
-export default function GalleryWithSort({ champions }: Props) {
+export default function GalleryWithSort() {
+  const [champions, setChampions] = useState<Champion[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [sort, setSort] = useState<SortKey>('default');
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/champions`)
+      .then((res) => {
+        if (!res.ok) throw new Error('API error');
+        return res.json();
+      })
+      .then((data: Champion[]) => setChampions(data))
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, []);
 
   const sorted = useMemo(() => {
     const copy = [...champions];
@@ -30,10 +42,10 @@ export default function GalleryWithSort({ champions }: Props) {
 
   return (
     <>
-      {/* Cabecera: título + selector */}
-      <div className="flex items-end justify-between flex-wrap gap-4 mb-8 mt-12">
+      {/* Cabecera: título + filtro */}
+      <div className="flex items-end justify-between flex-wrap gap-4 mb-8">
         <div>
-          <h1 className="text-4xl font-medium text-hextech mb-1">OTP Challenge</h1>
+          <h1 className="text-3xl font-medium text-hextech mb-1">OTP Challenge</h1>
           <p className="text-slate-400 ml-1 m-0">La serie de Werlyb, campeón a campeón.</p>
         </div>
 
@@ -55,8 +67,18 @@ export default function GalleryWithSort({ champions }: Props) {
         </nav>
       </div>
 
-      {/* Galería */}
-      {sorted.length === 0 ? (
+      {/* Estados */}
+      {loading ? (
+        <div className="text-center py-20 text-slate-400">
+          <i className="ti ti-loader-2 text-4xl text-slate-500 block mb-4 animate-spin"></i>
+          Cargando champions…
+        </div>
+      ) : error ? (
+        <div className="text-center py-20 text-slate-400">
+          <i className="ti ti-alert-triangle text-5xl text-slate-500 block mb-4"></i>
+          No se pudieron cargar los champions. Inténtalo más tarde.
+        </div>
+      ) : sorted.length === 0 ? (
         <div className="text-center py-20 text-slate-400">
           <i className="ti ti-mood-empty text-5xl text-slate-500 block mb-4"></i>
           No hay champions para mostrar ahora mismo.
@@ -69,6 +91,5 @@ export default function GalleryWithSort({ champions }: Props) {
         </article>
       )}
     </>
-
   );
 }

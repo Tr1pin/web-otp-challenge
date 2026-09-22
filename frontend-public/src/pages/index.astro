@@ -2,20 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import GalleryWithSort from '../components/islands/GalleryWithSort';
 import VideoSection from '../components/astro/VideoSection.astro';
-import type { Champion } from '../types';
-
-let champions: Champion[] = [];
-
-try {
-  
-  const API_URL = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8080';
-  const res = await fetch(`${API_URL}/api/champions`);
-
-  if (!res.ok) throw new Error('API respondió con error');
-  champions = await res.json();
-} catch (e) {
-  console.error('Api error');
-}
 ---
 
 <Layout title="OTP - Challenge">
@@ -28,6 +14,6 @@ try {
       </span>
     </VideoSection>
     <hr class="my-20 bg-page/30 border-b border-gray-100/10" id="gallery-header"/>
-    <GalleryWithSort client:load champions={champions} />
+    <GalleryWithSort client:load />
   </main>
 </Layout>
